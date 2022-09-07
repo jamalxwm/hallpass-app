@@ -22,7 +22,9 @@ const db = getFirestore(firebaseApp);
 
 const auth = getAuth(firebaseApp);
 onAuthStateChanged(auth, (user) => {
-  // Check for user status
+  if (user) {
+    const uid = user.uid;
+  }
 });
 
 export { auth, db };

@@ -23,7 +23,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => navigation.replace('Login'))
+      .then(() => navigation.replace('UserEntry'))
       .catch((error) => alert(error.message));
   };
   return (
