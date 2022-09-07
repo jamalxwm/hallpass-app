@@ -3,8 +3,23 @@ import React from 'react';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, doc, getDocs } from 'firebase/firestore';
+db;
 
 const HomeScreen = () => {
+  const [users, setUsers] = useState([]);
+  const usersCollectionRef = collection(db, 'users');
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+
+    getUsers();
+  }, []);
   const navigation = useNavigation();
   const handleSignOut = () => {
     signOut(auth)
@@ -13,6 +28,13 @@ const HomeScreen = () => {
   };
   return (
     <View style={styles.container}>
+      {users.map((user) => {
+        return (
+          <View>
+            <Text>{user.first_name}</Text>
+          </View>
+        );
+      })}
       <Text>Email: {auth.currentUser?.email}</Text>
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign out</Text>
