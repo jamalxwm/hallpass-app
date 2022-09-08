@@ -2,25 +2,39 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
+import { Chip } from "react-native-paper";
 
 export const LearnerHome = () => {
   const [tutors, setTutors] = useState([]);
 
   const tutorsCollectionRef = collection(db, "Tutors");
-  const testQuery = query(tutorsCollectionRef, where("skills", "array-contains", "piano"));
 
-  useEffect(() => {
-    const getTutors = async () => {
-      // if !skill get everything, else firestore query
-      const data = await getDocs(testQuery);
+  const getTutors = async (skill) => {
+    if (!skill) {
+      const data = await getDocs(tutorsCollectionRef);
       const myArr = [];
+
       data.forEach((doc) => {
         myArr.push(doc.data(), doc.id);
       });
-      console.log(myArr);
 
       setTutors(myArr);
-    };
+    }
+    const testQuery = query(
+      tutorsCollectionRef,
+      where("skills", "array-contains", skill)
+    );
+    const data = await getDocs(testQuery);
+    const myArr = [];
+
+    data.forEach((doc) => {
+      myArr.push(doc.data(), doc.id);
+    });
+
+    setTutors(myArr);
+  };
+
+  useEffect(() => {
     getTutors();
   }, []);
 
@@ -30,6 +44,22 @@ export const LearnerHome = () => {
 
   return (
     <View>
+      <Chip icon="information" onPress={() => getTutors()}>
+        All!
+      </Chip>
+      <Chip icon="information" onPress={() => getTutors("dancing")}>
+        Dancing
+      </Chip>
+      <Chip icon="information" onPress={() => getTutors("programming")}>
+        Programming
+      </Chip>
+      <Chip icon="information" onPress={() => getTutors("spanish")}>
+        Spanish
+      </Chip>
+      <Chip icon="information" onPress={() => getTutors("cooking")}>
+        Cooking
+      </Chip>
+
       {tutors.map((tutor) => {
         return (
           <View>
@@ -42,7 +72,6 @@ export const LearnerHome = () => {
             <Text>{tutor.firstname}</Text>
 
             <Text>{tutor.skills}</Text>
-    
           </View>
         );
       })}
