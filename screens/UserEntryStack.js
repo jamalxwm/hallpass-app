@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './UserEntryScreens/LoginScreen';
 import CreateNameScreen from './UserEntryScreens/CreateNameScreen';
 import { UserContext } from '../src/contexts/user';
+import CreateUserSubjectScreen from './UserEntryScreens/CreateUserSubjectScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,6 +13,7 @@ const UserEntryStack = () => {
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="CreateName" component={CreateNameScreen} />
+      <Stack.Screen name="CreateSubject" component={CreateUserSubjectScreen} />
     </Stack.Navigator>
   );
 };

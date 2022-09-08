@@ -6,35 +6,65 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { getAuth } from 'firebase/auth';
-getAuth;
+import React, { useContext, useEffect, useState } from 'react';
 import {
+  confirmPasswordReset,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../src/contexts/user';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+
+
 
 const CreateNameScreen = () => {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const { loggedInUser } = useContext(UserContext);
 
+  const navigation = useNavigation();
+
+  const handleTutorReg = async () => {
+    const docPath = doc(db, 'users', loggedInUser);
+    await updateDoc(docPath, {
+      name: { first: firstName, last: lastName },
+      isTutor: true,
+    }).then(navigation.navigate('CreateSubject'));
+  };
+  const handleLearnerReg = async () => {
+    const docPath = doc(db, 'users', loggedInUser);
+    await updateDoc(docPath, {
+      name: { first: firstName, last: lastName },
+      isLearner: true,
+    }).then(navigation.navigate('CreateSubject'));
+  };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.inputContainer}>
+        <Text>{loggedInUser}</Text>
+
         <TextInput
-          placeholder="Full Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
+          placeholder="First name"
+          value={firstName}
+          onChangeText={(text) => setFirstName(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={(text) => setLastName(text)}
           style={styles.input}
         />
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={handleTutorReg} style={styles.button}>
           <Text style={styles.buttonText}>Tutor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.buttonOutlineText]}>
+        <TouchableOpacity onPress={handleLearnerReg} style={[styles.button, styles.buttonOutlineText]}>
           <Text style={styles.buttonText}>Learner</Text>
         </TouchableOpacity>
       </View>
@@ -62,7 +92,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '60%',
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
