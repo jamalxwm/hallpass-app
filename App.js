@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import { useFonts } from 'expo-font';
+import {LearnerHome} from "./screens/LearnerHome"
 
 
 
@@ -20,7 +21,7 @@ export default function App() {
           name="Login"
           component={LoginScreen}
         />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="LearnerHome" component={LearnerHome} />
       </Stack.Navigator>
     </NavigationContainer>
   );
