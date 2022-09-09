@@ -1,18 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
-import { useFonts } from 'expo-font';
-import {LearnerHome} from "./screens/LearnerHome"
-
-
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./screens/LoginScreen";
+import HomeScreen from "./screens/HomeScreen";
+import SingleTutor from "./screens/SingleTutor";
+import { useFonts } from "expo-font";
+import { LearnerHome } from "./screens/LearnerHome";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
- 
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -22,6 +20,7 @@ export default function App() {
           component={LoginScreen}
         />
         <Stack.Screen name="LearnerHome" component={LearnerHome} />
+        <Stack.Screen name="SingleTutor" component={SingleTutor} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -30,8 +29,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

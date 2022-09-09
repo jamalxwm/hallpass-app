@@ -1,11 +1,21 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  ScrollView,
+} from "react-native";
+import { React, useEffect, useState } from "react";
 import { db } from "../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { Chip } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
-export const LearnerHome = () => {
+export const LearnerHome = ({navigation}) => {
   const [tutors, setTutors] = useState([]);
+
+  const navigation = useNavigation();
 
   const tutorsCollectionRef = collection(db, "Tutors");
 
@@ -13,11 +23,9 @@ export const LearnerHome = () => {
     if (!skill) {
       const data = await getDocs(tutorsCollectionRef);
       const myArr = [];
-
       data.forEach((doc) => {
         myArr.push(doc.data(), doc.id);
       });
-
       setTutors(myArr);
     }
     const testQuery = query(
@@ -26,11 +34,9 @@ export const LearnerHome = () => {
     );
     const data = await getDocs(testQuery);
     const myArr = [];
-
     data.forEach((doc) => {
       myArr.push(doc.data(), doc.id);
     });
-
     setTutors(myArr);
   };
 
@@ -38,55 +44,68 @@ export const LearnerHome = () => {
     getTutors();
   }, []);
 
-  // create dropdown with all of the filter options
-  // get options from skills collection
-  // use firebase queries, query the tutor collection for the skills key
-
   return (
-    <View>
-      <Chip icon="information" onPress={() => getTutors()}>
-        All!
+    <ScrollView>
+      <Chip
+        icon="information"
+        style={styles.skillfilter}
+        onPress={() => getTutors()}
+      >
+        All
       </Chip>
-      <Chip icon="information" onPress={() => getTutors("dancing")}>
+      <Chip
+        icon="information"
+        style={styles.skillfilter}
+        onPress={() => getTutors("dancing")}
+      >
         Dancing
       </Chip>
-      <Chip icon="information" onPress={() => getTutors("programming")}>
+      <Chip
+        icon="information"
+        style={styles.skillfilter}
+        onPress={() => getTutors("programming")}
+      >
         Programming
       </Chip>
-      <Chip icon="information" onPress={() => getTutors("spanish")}>
+      <Chip
+        icon="information"
+        style={styles.skillfilter}
+        onPress={() => getTutors("spanish")}
+      >
         Spanish
       </Chip>
-      <Chip icon="information" onPress={() => getTutors("cooking")}>
+      <Chip
+        icon="information"
+        style={styles.skillfilter}
+        onPress={() => getTutors("cooking")}
+      >
         Cooking
       </Chip>
-
       {tutors.map((tutor) => {
         return (
           <View>
-            {/* <Image
-              style={styles.tinyLogo}
-              source={{
-                uri: tutor.image.toString(),
-              }}
-            /> */}
+            <Image style={styles.tinyLogo} source={{ uri: tutor.image }} />
             <Text>{tutor.firstname}</Text>
-
             <Text>{tutor.skills}</Text>
+            <Button
+              title="view tutor"
+              onPress={(e) => {
+                e.preventDefault() && navigation.replace("SingleTutor");
+              }}
+            />
           </View>
         );
       })}
-      <Text>LearnerHome</Text>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   tinyLogo: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
   },
-  logo: {
-    width: 66,
-    height: 58,
+  skillfilter: {
+    width: 150,
   },
 });
