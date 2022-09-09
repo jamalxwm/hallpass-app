@@ -10,12 +10,9 @@ import { React, useEffect, useState } from "react";
 import { db } from "../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { Chip } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 
 export const LearnerHome = ({navigation}) => {
   const [tutors, setTutors] = useState([]);
-
-  const navigation = useNavigation();
 
   const tutorsCollectionRef = collection(db, "Tutors");
 

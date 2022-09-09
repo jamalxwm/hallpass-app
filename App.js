@@ -30,8 +30,7 @@ export default function App() {
             options={{ headerShown: false }}
             component={UserEntryStack}
           />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="LearnerHome" component={LearnerHome} />
+          <Stack.Screen name="Home" component={LearnerHome} />
           <Stack.Screen name="SingleTutor" component={SingleTutor} />
         </Stack.Navigator>
       </NavigationContainer>
