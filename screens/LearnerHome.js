@@ -1,17 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Button,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, ScrollView } from "react-native";
 import { React, useEffect, useState } from "react";
 import { db } from "../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { Chip, Card, Title } from "react-native-paper";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 export const LearnerHome = ({ navigation }) => {
   const [tutors, setTutors] = useState([]);
