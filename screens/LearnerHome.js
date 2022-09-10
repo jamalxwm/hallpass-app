@@ -13,7 +13,7 @@ export const LearnerHome = ({ navigation }) => {
     const data = await getDocs(tutorsCollectionRef);
     const myArr = [];
     data.forEach((doc) => {
-      myArr.push(doc.data());
+      myArr.push({ tutorData: doc.data(), id: doc.id });
     });
     setTutors(myArr);
   };
@@ -26,7 +26,7 @@ export const LearnerHome = ({ navigation }) => {
     const data = await getDocs(testQuery);
     const myArr = [];
     data.forEach((doc) => {
-      myArr.push(doc.data());
+      myArr.push({ tutorData: doc.data(), id: doc.id });
     });
     setTutors(myArr);
   };
@@ -75,14 +75,17 @@ export const LearnerHome = ({ navigation }) => {
       {tutors.map((tutor) => {
         return (
           <Card>
-            <Card.Cover style={styles.tinyLogo} source={{ uri: tutor.image }} />
+            <Card.Cover
+              style={styles.tinyLogo}
+              source={{ uri: tutor.tutorData.image }}
+            />
             <Card.Content>
-              <Title>{tutor.firstname}</Title>
-              <Text>{tutor.skills}</Text>
+              <Title>{tutor.tutorData.firstname}</Title>
+              <Text>I can teach {tutor.tutorData.skills}</Text>
             </Card.Content>
             <Chip
               onPress={() => {
-                navigation.navigate("SingleTutor");
+                navigation.navigate("SingleTutor", { tutor });
               }}
             />
           </Card>
