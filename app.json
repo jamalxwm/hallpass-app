@@ -18,6 +18,8 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.hallpass.hallpassapp",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
