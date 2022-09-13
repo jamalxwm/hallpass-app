@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View, Image, TextInput, Button } from "react-native";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
+
+//get current rating
+//average current rating with new rating
+//overwrite current rating with new average
 
 const SingleTutor = ({
   route: {
@@ -10,10 +14,25 @@ const SingleTutor = ({
   },
 }) => {
   const [rating, setRating] = useState(0);
-  //const [reviews, setReviews]= useState([])
+  const [oldRating, setOldRating] = useState([]);
   const [newReview, setNewReview] = useState("");
+  const [arr, setArr] = useState([]);
 
   const reviews = tutor.tutorData.reviews;
+  const tutorRef = doc(db, "Tutors", tutor.id);
+
+  const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
+
+  const getRating = async () => {
+    const tutorData = await getDoc(tutorRef);
+    if (oldRating.length >= 10) setOldRating([]);
+    arr.push(tutorData.data().rating);
+    setOldRating(arr);
+  };
+
+  useEffect(() => {
+    handleSubmitRating();
+  }, []);
 
   const handleAddReview = () => {
     reviews.push(newReview);
@@ -25,6 +44,7 @@ const SingleTutor = ({
   const handleSubmitRating = () => {
     const ratingRef = doc(db, "Tutors", tutor.id);
     setDoc(ratingRef, { rating: rating }, { merge: true });
+    getRating();
   };
 
   return (
@@ -39,13 +59,13 @@ const SingleTutor = ({
       <Text>
         {tutor.tutorData.bio} {"\n"}
       </Text>
-      <Text>{tutor.tutorData.rating}</Text>
+      <Text>{Math.round(average(oldRating) * 10) / 10}</Text>
       <StarRating
         rating={rating}
         onChange={setRating}
         starSize={30}
       ></StarRating>
-      <Button onPress={() => handleSubmitRating()} title="submit" />
+      <Button onPress={handleSubmitRating} title="submit" />
 
       <View>
         <TextInput
