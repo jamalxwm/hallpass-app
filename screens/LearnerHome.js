@@ -17,10 +17,12 @@ import {
 } from "firebase/firestore";
 import { Chip, Card, Title } from "react-native-paper";
 import { UserContext } from "../src/contexts/user";
+import { useTransitionProgress } from "react-native-screens";
 
 export const LearnerHome = ({ navigation }) => {
   const [tutors, setTutors] = useState([]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
+  const [loading, isLoading] = useState(true)
   const { loggedInUser } = useContext(UserContext);
 
   const tutorsCollectionRef = collection(db, "Tutors");
@@ -29,6 +31,8 @@ export const LearnerHome = ({ navigation }) => {
   const getUser = async () => {
     const data = await getDoc(loggedInUserRef);
     setUser(data.data());
+    console.log(useTransitionProgress)
+    isLoading(false)
   };
 
   const getAllTutors = async () => {
@@ -61,9 +65,12 @@ export const LearnerHome = ({ navigation }) => {
   return (
     <ScrollView style={styles.app}>
       <View style={styles.homemap}>
-        {/* <Text>
+        {!loading && (
+          <Text>
           Welcome Back! {"\n"} {user.name.first}
-        </Text>  */}
+        </Text>  
+        )}
+       
         <Chip icon="home" onPress={() => getAllTutors()} />
 
         <Chip
