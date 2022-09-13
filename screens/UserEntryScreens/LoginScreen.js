@@ -15,11 +15,16 @@ import {
 } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../src/contexts/user';
+import { typography, colors } from '../../styles/base';
+import Poppins from '../../src/components/Poppins';
+
+
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+
 
   const navigation = useNavigation();
 
@@ -55,7 +60,6 @@ const LoginScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.inputContainer}>
-        <Text>{loggedInUser}</Text>
 
         <TextInput
           placeholder="Email"
@@ -75,13 +79,13 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Poppins text={'Login'} style={{color: colors.primary[10]}} T16 S/> 
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutlineText]}
+          style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -95,15 +99,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   inputContainer: {
     width: '80%',
   },
   input: {
-    backgroundColor: 'white',
+    //fontFamily: 'Medium',
+    color: '#152946',
+    backgroundColor: '#F0F0FF',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 32,
     marginTop: 5,
   },
   buttonContainer: {
@@ -113,27 +120,29 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#0782F9',
-    width: '100%',
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: '#524ffc',
+    height: 48,
+    width: 327,
+    justifyContent: 'center',
+    borderRadius: 32,
     alignItems: 'center',
     marginTop: 5,
   },
   buttonOutline: {
     backgroundColor: 'white',
     marginTop: 5,
-    borderColor: '#0782F9',
+    borderColor: '#524ffc',
     borderWidth: 2,
   },
   buttonText: {
     color: 'white',
-    fontWeight: '700',
     fontSize: 16,
+    //fontFamily: 'semibold',
   },
   buttonOutlineText: {
-    color: '#0782F9',
+    color: '#524ffc',
     fontWeight: '700',
     fontSize: 16,
+    //fontFamily: 'semibold'
   },
 });
