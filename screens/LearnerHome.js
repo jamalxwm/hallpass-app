@@ -74,7 +74,12 @@ export const LearnerHome = ({ navigation }) => {
       </Chip>
       {tutors.map((tutor) => {
         return (
-          <Card>
+          <Card
+            key={tutor.id}
+            onPress={() => {
+              navigation.navigate("SingleTutor", { tutor });
+            }}
+          >
             <Card.Cover
               style={styles.tinyLogo}
               source={{ uri: tutor.tutorData.image }}
@@ -83,11 +88,6 @@ export const LearnerHome = ({ navigation }) => {
               <Title>{tutor.tutorData.firstname}</Title>
               <Text>I can teach {tutor.tutorData.skills}</Text>
             </Card.Content>
-            <Chip
-              onPress={() => {
-                navigation.navigate("SingleTutor", { tutor });
-              }}
-            />
           </Card>
         );
       })}
