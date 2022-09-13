@@ -22,7 +22,7 @@ export default function MapScreen({ navigation }) {
     const data = await getDocs(tutorsCollectionRef);
     const myArr = [];
     data.forEach((doc) => {
-      myArr.push(doc.data());
+      myArr.push({ tutorData: doc.data(), id: doc.id });
     });
     setTutors(myArr);
   };
@@ -47,9 +47,11 @@ export default function MapScreen({ navigation }) {
           return (
             <MapView.Marker
               coordinate={{
-                latitude: tutor.location.latitude ? tutor.location.latitude : 0,
-                longitude: tutor.location.longitude
-                  ? tutor.location.longitude
+                latitude: tutor.tutorData.location.latitude
+                  ? tutor.tutorData.location.latitude
+                  : 0,
+                longitude: tutor.tutorData.location.longitude
+                  ? tutor.tutorData.location.longitude
                   : 0,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
@@ -60,18 +62,21 @@ export default function MapScreen({ navigation }) {
                 tooltip={true}
                 style={{ backgroundColor: "#ffffff" }}
                 onPress={() => {
-                  navigation.navigate("SingleTutor");
+                  navigation.navigate("SingleTutor", { tutor });
                 }}
               >
-                <View
-                  style={styles.callout}
-                  onPress={() => {
-                    navigation.navigate("SingleTutor");
-                  }}
-                >
+                <View style={styles.callout}>
                   <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse et sollicitudin purus, quis feugiat magna.
+                    {tutor.tutorData.firstname} {tutor.tutorData.lastname}
+                  </Text>
+                  <Text>
+                    Skills:{" "}
+                    {tutor.tutorData.skills.map((skill) => {
+                      return <Text>{skill.toString()}</Text>;
+                    })}{" "}
+                  </Text>
+                  <Text>
+                    In-person lessons: {tutor.tutorData.inperson ? "✅" : "❌"}
                   </Text>
                 </View>
               </MapView.Callout>
@@ -98,9 +103,9 @@ export default function MapScreen({ navigation }) {
             style={{ backgroundColor: "#ffffff" }}
           >
             <View style={styles.callout}>
+              <Text>You are here!</Text>
               <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse et sollicitudin purus, quis feugiat magna.
+                {user?.name?.first} {user?.name?.last}
               </Text>
             </View>
           </MapView.Callout>
