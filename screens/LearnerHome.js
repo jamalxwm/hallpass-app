@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ScrollView } from "react-native";
+import { StyleSheet, Text, ScrollView, Button } from "react-native";
 import { React, useEffect, useState } from "react";
 import { db } from "../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
@@ -13,7 +13,7 @@ export const LearnerHome = ({ navigation }) => {
     const data = await getDocs(tutorsCollectionRef);
     const myArr = [];
     data.forEach((doc) => {
-      myArr.push(doc.data());
+      myArr.push({ tutorData: doc.data(), id: doc.id });
     });
     setTutors(myArr);
   };
@@ -26,7 +26,7 @@ export const LearnerHome = ({ navigation }) => {
     const data = await getDocs(testQuery);
     const myArr = [];
     data.forEach((doc) => {
-      myArr.push(doc.data());
+      myArr.push({ tutorData: doc.data(), id: doc.id });
     });
     setTutors(myArr);
   };
@@ -74,20 +74,31 @@ export const LearnerHome = ({ navigation }) => {
       </Chip>
       {tutors.map((tutor) => {
         return (
-          <Card>
-            <Card.Cover style={styles.tinyLogo} source={{ uri: tutor.image }} />
-            <Card.Content>
-              <Title>{tutor.firstname}</Title>
-              <Text>{tutor.skills}</Text>
-            </Card.Content>
-            <Chip
-              onPress={() => {
-                navigation.navigate("SingleTutor");
-              }}
+          <Card
+            key={tutor.id}
+            onPress={() => {
+              navigation.navigate("SingleTutor", { tutor });
+            }}
+          >
+            <Card.Cover
+              style={styles.tinyLogo}
+              source={{ uri: tutor.tutorData.image }}
             />
+            <Card.Content>
+              <Title>{tutor.tutorData.firstname}</Title>
+              <Text>I can teach {tutor.tutorData.skills}</Text>
+            </Card.Content>
           </Card>
         );
       })}
+      <Button
+        onPress={() => {
+          navigation.navigate("MapScreen");
+        }}
+        title="Map Test"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
     </ScrollView>
   );
 };
