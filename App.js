@@ -1,15 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './screens/UserEntryScreens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
-import { useFonts } from 'expo-font';
-import UserEntryStack from './screens/UserEntryStack';
-import { UserContext } from './src/contexts/user';
-import { useState } from 'react';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./screens/UserEntryScreens/LoginScreen";
+import HomeScreen from "./screens/HomeScreen";
+import { useFonts } from "expo-font";
+import UserEntryStack from "./screens/UserEntryStack";
+import { UserContext } from "./src/contexts/user";
+import { useState } from "react";
 import SingleTutor from "./screens/SingleTutor";
 import { LearnerHome } from "./screens/LearnerHome";
+import MapScreen from "./screens/MapScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ export default function App() {
           />
           <Stack.Screen name="Home" component={LearnerHome} />
           <Stack.Screen name="SingleTutor" component={SingleTutor} />
+          <Stack.Screen name="MapScreen" component={MapScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
