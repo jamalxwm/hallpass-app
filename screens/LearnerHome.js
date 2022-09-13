@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ScrollView } from "react-native";
+import { StyleSheet, Text, ScrollView, Button } from "react-native";
 import { React, useEffect, useState } from "react";
 import { db } from "../firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
@@ -88,6 +88,14 @@ export const LearnerHome = ({ navigation }) => {
           </Card>
         );
       })}
+      <Button
+        onPress={() => {
+          navigation.navigate("MapScreen");
+        }}
+        title="Map Test"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
     </ScrollView>
   );
 };
