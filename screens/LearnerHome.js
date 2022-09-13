@@ -1,13 +1,35 @@
-import { StyleSheet, Text, ScrollView, View, Button } from "react-native";
-import { React, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from "react-native";
+import { React, useEffect, useState, useContext } from "react";
 import { db } from "../firebase";
-import { getDocs, collection, query, where } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { Chip, Card, Title } from "react-native-paper";
+import { UserContext } from "../src/contexts/user";
 
 export const LearnerHome = ({ navigation }) => {
   const [tutors, setTutors] = useState([]);
+  const [user, setUser] = useState([]);
+  const { loggedInUser } = useContext(UserContext);
 
   const tutorsCollectionRef = collection(db, "Tutors");
+  const loggedInUserRef = doc(db, "users", `${loggedInUser}`);
+
+  const getUser = async () => {
+    const data = await getDoc(loggedInUserRef);
+    setUser(data.data());
+  };
 
   const getAllTutors = async () => {
     const data = await getDocs(tutorsCollectionRef);
@@ -33,15 +55,19 @@ export const LearnerHome = ({ navigation }) => {
 
   useEffect(() => {
     getAllTutors();
+    getUser();
   }, []);
 
   return (
     <ScrollView style={styles.app}>
       <View style={styles.homemap}>
-        <Chip icon="home" onPress={() => getAllTutors()}>
-          All
-        </Chip>
+        {/* <Text>
+          Welcome Back! {"\n"} {user.name.first}
+        </Text>  */}
+        <Chip icon="home" onPress={() => getAllTutors()} />
+
         <Chip
+          style={styles.map}
           icon="map-marker"
           onPress={() => {
             navigation.navigate("MapScreen");
@@ -51,52 +77,60 @@ export const LearnerHome = ({ navigation }) => {
         </Chip>
       </View>
 
-      <Text style={styles.text}>Filter by popular lessons</Text>
+      <View style={styles.homemap}>
+        <Text style={styles.popcat}>Filter by popular categories</Text>
+        <TouchableOpacity>
+          <Text style={styles.seeall} onPress={() => getAllTutors()}>
+            See all
+          </Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView horizontal={true} style={styles.skills}>
         <Chip
           icon="human-female-dance"
-          style={styles.skills}
+          style={styles.skill}
           onPress={() => getTutors("dancing")}
         >
           Dancing
         </Chip>
         <Chip
           icon="code-braces-box"
-          style={styles.skills}
+          style={styles.skill}
           onPress={() => getTutors("programming")}
         >
           Programming
         </Chip>
         <Chip
           icon="google-translate"
-          style={styles.skills}
+          style={styles.skill}
           onPress={() => getTutors("spanish")}
         >
           Spanish
         </Chip>
         <Chip
           icon="chef-hat"
-          style={styles.skills}
+          style={styles.skill}
           onPress={() => getTutors("cooking")}
         >
           Cooking
         </Chip>
         <Chip
           icon="weight-lifter"
-          style={styles.skills}
+          style={styles.skill}
           onPress={() => getTutors("fitness")}
         >
           Fitness
         </Chip>
         <Chip
           icon="music"
-          style={styles.skills}
+          style={styles.skill}
           onPress={() => getTutors("music")}
         >
           Music
         </Chip>
       </ScrollView>
 
+      <Text style={styles.recommended}>Recommended</Text>
       {tutors.map((tutor) => {
         return (
           <Card
@@ -105,26 +139,18 @@ export const LearnerHome = ({ navigation }) => {
               navigation.navigate("SingleTutor", { tutor });
             }}
           >
-            <View
-              key={tutor.id}
-              onPress={() => {
-                navigation.navigate("SingleTutor", { tutor });
-              }}
-            >
+            <View key={tutor.id}>
               <Card.Cover
-                onPress={() => {
-                  navigation.navigate("SingleTutor", { tutor });
-                }}
                 style={styles.tutorLogo}
                 source={{ uri: tutor.tutorData.image }}
               />
-              <Card.Content
-                onPress={() => {
-                  navigation.navigate("SingleTutor", { tutor });
-                }}
-              >
-                <Title>{tutor.tutorData.firstname}</Title>
-                <Text>I can teach {tutor.tutorData.skills}</Text>
+              <Card.Content>
+                <Text style={styles.skillname}>
+                  Learn {tutor.tutorData.skills}
+                </Text>
+                <Text style={styles.tutorname}>
+                  {tutor.tutorData.firstname} {tutor.tutorData.lastname}
+                </Text>
               </Card.Content>
             </View>
           </Card>
@@ -140,30 +166,50 @@ const styles = StyleSheet.create({
   },
   homemap: {
     display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
   },
   skills: {
     height: 50,
+  },
+  skill: {
+    backgroundColor: "#9487ee",
     marginLeft: 10,
   },
-  text: {
-    marginTop: 10,
+  popcat: {
     marginBottom: 10,
+    fontSize: 16,
+    fontWeight: "bold",
   },
+  seeall: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#6c5ae8",
+  },
+  recommended: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginTop: 20,
+  },
+
   tutors: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    marginLeft: 25,
-    marginRight: 25,
-    marginTop: 20,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 15,
     padding: 15,
     borderRadius: 20,
   },
   tutorLogo: {
-    width: 270,
-    height: 130,
+    width: 290,
+    height: 150,
     borderRadius: 10,
+    marginBottom: 10,
   },
   shadowProp: {
     shadowColor: "#8b8b8b",
@@ -171,5 +217,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 2.2,
     shadowRadius: 3,
     elevation: 5,
+  },
+  tutorname: {
+    color: "grey",
+    fontSize: 15,
+    marginTop: 5,
+  },
+  skillname: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  map: {
+    backgroundColor: "#d1d1d1",
   },
 });
