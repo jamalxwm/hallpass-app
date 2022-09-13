@@ -1,6 +1,14 @@
 import { React, useEffect, useState, useContext, useRef } from "react";
 import MapView from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions, Icon } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Icon,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { db } from "../firebase";
 import { getDocs, collection, doc, getDoc } from "firebase/firestore";
 import { UserContext } from "../src/contexts/user";
@@ -66,18 +74,28 @@ export default function MapScreen({ navigation }) {
                 }}
               >
                 <View style={styles.callout}>
-                  <Text>
+                  <Text style={styles.tutorName}>
                     {tutor.tutorData.firstname} {tutor.tutorData.lastname}
                   </Text>
+                  <Text style={styles.properties}>Skills: </Text>
                   <Text>
-                    Skills:{" "}
                     {tutor.tutorData.skills.map((skill) => {
-                      return <Text>{skill.toString()}</Text>;
+                      return (
+                        <Text style={styles.skill}>{skill.toString()}</Text>
+                      );
                     })}{" "}
                   </Text>
-                  <Text>
-                    In-person lessons: {tutor.tutorData.inperson ? "✅" : "❌"}
+
+                  <Text style={styles.properties}>
+                    In-person lessons: {tutor.tutorData.inperson ? "✅" : "❌"}{" "}
+                    {"\n"}
                   </Text>
+
+                  <TouchableOpacity style={styles.profileButton}>
+                    <Text style={styles.button}>
+                      Click here to view my profile!
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </MapView.Callout>
             </MapView.Marker>
@@ -103,9 +121,8 @@ export default function MapScreen({ navigation }) {
             style={{ backgroundColor: "#ffffff" }}
           >
             <View style={styles.callout}>
-              <Text>You are here!</Text>
-              <Text>
-                {user?.name?.first} {user?.name?.last}
+              <Text style={styles.userName}>
+                Hey {user?.name?.first} {user?.name?.last}, you are here!
               </Text>
             </View>
           </MapView.Callout>
@@ -119,14 +136,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
   callout: {
-    width: 100,
+    backgroundColor: "#7875FC",
+    borderRadius: 15,
+    padding: 20,
+    width: 150,
+  },
+  properties: {
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  userName: {
+    fontWeight: "bold",
+    fontSize: 15,
+    textAlign: "center",
+  },
+  tutorName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  skill: {
+    fontSize: 16,
+  },
+  profileButton: {
+    backgroundColor: "#5F5CF0",
+    borderRadius: 10,
+    color: "red",
+    width: 115,
+    padding: 10,
+  },
+  button: {
+    textAlign: "center",
+    fontSize: 12,
   },
 });
