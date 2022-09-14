@@ -17,15 +17,17 @@ import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../src/contexts/user';
 import { typography, colors } from '../../styles/base';
 import Poppins from '../../src/components/Poppins';
-
-
+import { Poppins_500Medium, useFonts } from '@expo-google-fonts/poppins';
+import Logo from '../../src/components/Logo';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
-
+  const [fontsLoaded] = useFonts({
+    Poppins_500Medium,
+  });
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -59,8 +61,19 @@ const LoginScreen = () => {
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <View style={styles.inputContainer}>
+      <View style={styles.logoContainer}>
+        <Logo height={91} width={85} />
+        <View>
+          <Poppins
+            text={'Login. Learn anything.'}
+            style={{ color: colors.neutral[100] }}
+            T24
+            B
+          />
+        </View>
+      </View>
 
+      <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
           value={email}
@@ -79,13 +92,18 @@ const LoginScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Poppins text={'Login'} style={{color: colors.primary[10]}} T16 S/> 
+          <Poppins text={'Login'} style={{ color: '#FFFFFF' }} T16 S />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>Register</Text>
+          <Poppins
+            text={'Register'}
+            style={{ color: colors.primary[100] }}
+            T16
+            S
+          />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -95,6 +113,11 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  logoContainer: {
+    alignItems: 'center',
+    flex: 0.5,
+    marginBottom: 10,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -105,13 +128,14 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   input: {
-    //fontFamily: 'Medium',
-    color: '#152946',
-    backgroundColor: '#F0F0FF',
+    fontFamily: 'Poppins_500Medium',
+    color: colors.neutral[100],
+    backgroundColor: colors.primary[10],
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 32,
     marginTop: 5,
+    height: 48,
   },
   buttonContainer: {
     width: '60%',
@@ -137,12 +161,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    //fontFamily: 'semibold',
   },
   buttonOutlineText: {
     color: '#524ffc',
     fontWeight: '700',
     fontSize: 16,
-    //fontFamily: 'semibold'
   },
 });

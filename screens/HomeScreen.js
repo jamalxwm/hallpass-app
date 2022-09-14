@@ -6,11 +6,17 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, doc, getDocs } from 'firebase/firestore';
-db;
+import {
+  SafeAreaView,
+  initialWindowMetrics,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import { inlineStyles } from 'react-native-svg';
 
 const HomeScreen = () => {
   const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, 'users');
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -27,19 +33,21 @@ const HomeScreen = () => {
       .catch((error) => alert(error.message));
   };
   return (
-    <View style={styles.container}>
-      {users.map((user) => {
-        return (
-          <View>
-            <Text>{user.first_name}</Text>
-          </View>
-        );
-      })}
-      <Text>Email: {auth.currentUser?.email}</Text>
-      <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView>
+      <View style={styles.container}>
+        {users.map((user) => {
+          return (
+            <View>
+              <Text>{user.first_name}</Text>
+            </View>
+          );
+        })}
+        <Text>Email: {auth.currentUser?.email}</Text>
+        <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+          <Text style={styles.buttonText}>Sign out</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -50,6 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 44
   },
   button: {
     backgroundColor: '#0782F9',
