@@ -51,24 +51,35 @@ const SingleTutor = ({
 
   return (
     <View style={styles.all}>
-      <Image style={styles.tinyLogo} source={{ uri: tutor.tutorData.image }} />
-      <Text>
-        {tutor.tutorData.firstname} {tutor.tutorData.lastname}
-      </Text>
-      <Text>{tutor.tutorData.skills}</Text>
-      {tutor.tutorData.inperson && <Text>in person</Text>}
-      {tutor.tutorData.virtual && <Text>virtual</Text>}
-      <Text>
+      <View style={styles.header}>
+        <Image
+          style={styles.tinyLogo}
+          source={{ uri: tutor.tutorData.image }}
+        />
+        <Text style={styles.tutorName}>
+          {tutor.tutorData.firstname} {tutor.tutorData.lastname}
+        </Text>
+      </View>
+      <Text style={styles.tutorSkill}>{tutor.tutorData.skills}</Text>
+      {tutor.tutorData.inperson && (
+        <Text style={styles.tutorLesson}>in person</Text>
+      )}
+      {tutor.tutorData.virtual && (
+        <Text style={styles.tutorLesson}>virtual</Text>
+      )}
+
+      <Text style={styles.tutorBio}>
         {tutor.tutorData.bio} {"\n"}
       </Text>
-      <Text>{num || 0}</Text>
-      <StarRating
-        rating={rating}
-        onChange={setRating}
-        starSize={30}
-      ></StarRating>
-      <Button onPress={handleSubmitRating} title="submit" />
-
+      <View style={styles.starRating}>
+        <Text style={styles.starRating}>{num || 0}</Text>
+        <StarRating
+          rating={rating}
+          onChange={setRating}
+          starSize={40}
+        ></StarRating>
+        <Button onPress={handleSubmitRating} title="submit" />
+      </View>
       <View>
         <TextInput
           value={newReview}
@@ -102,8 +113,44 @@ export default SingleTutor;
 
 const styles = StyleSheet.create({
   tinyLogo: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 180,
+    borderRadius: 100,
+    borderColor: "#5F5CF0",
+    borderWidth: 2,
+  },
+  header: {
+    flexDirection: "row",
+  },
+
+  tutorName: {
+    fontWeight: "bold",
+    fontSize: "25",
+    paddingTop: 30,
+    paddingBottom: 10,
+    color: "#5F5CF0",
+  },
+  tutorSkill: {
+    fontSize: "20",
+    fontWeight: "bold",
+    textAlign: "auto",
+  },
+  tutorLesson: {
+    fontSize: "17",
+    fontStyle: "italic",
+    paddingBottom: 15,
+  },
+  tutorBio: {
+    borderColor: "#7875FC",
+    borderWidth: 2,
+    paddingTop: 20,
+    fontSize: 15,
+    borderRadius: 20,
+  },
+  starRating: {
+    fontSize: 35,
+    paddingTop: 25,
+    alignItems: "center",
   },
   all: {
     justifyContent: "center",
