@@ -22,7 +22,7 @@ import { useTransitionProgress } from "react-native-screens";
 export const LearnerHome = ({ navigation }) => {
   const [tutors, setTutors] = useState([]);
   const [user, setUser] = useState({});
-  const [loading, isLoading] = useState(true)
+  const [loading, isLoading] = useState(true);
   const { loggedInUser } = useContext(UserContext);
 
   const tutorsCollectionRef = collection(db, "Tutors");
@@ -31,8 +31,7 @@ export const LearnerHome = ({ navigation }) => {
   const getUser = async () => {
     const data = await getDoc(loggedInUserRef);
     setUser(data.data());
-    console.log(useTransitionProgress)
-    isLoading(false)
+    isLoading(false);
   };
 
   const getAllTutors = async () => {
@@ -64,14 +63,18 @@ export const LearnerHome = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.app}>
-      <View style={styles.homemap}>
+      <View style={styles.user}>
         {!loading && (
-          <Text>
-          Welcome Back! {"\n"} {user.name.first}
-        </Text>  
+          <View style={styles.homemap}>
+            <Card.Cover
+              style={styles.userlogo}
+              source={{ uri: user.avatarUrl }}
+            />
+            <Text>
+              Welcome Back! {"\n"} {user.name.first}
+            </Text>
+          </View>
         )}
-       
-        <Chip icon="home" onPress={() => getAllTutors()} />
 
         <Chip
           style={styles.map}
@@ -80,7 +83,7 @@ export const LearnerHome = ({ navigation }) => {
             navigation.navigate("MapScreen");
           }}
         >
-          Map view
+          Map
         </Chip>
       </View>
 
@@ -177,6 +180,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 10,
   },
+  user: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   skills: {
     height: 50,
   },
@@ -198,7 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 10,
-    marginTop: 20,
+    marginTop: 15,
   },
 
   tutors: {
@@ -219,7 +227,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   shadowProp: {
-    shadowColor: "#8b8b8b",
+    shadowColor: "#757575",
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 2.2,
     shadowRadius: 3,
@@ -235,6 +243,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   map: {
-    backgroundColor: "#d1d1d1",
+    backgroundColor: "#f0eefd",
+    height: 50,
+    width: 80,
+    marginTop: 5,
+    marginRight: 5,
+  },
+  userlogo: {
+    borderRadius: 50,
+    height: 40,
+    width: 40,
+    marginRight: 5,
   },
 });
