@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TextInput, Button } from "react-native";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const SingleTutor = ({
@@ -10,10 +10,27 @@ const SingleTutor = ({
   },
 }) => {
   const [rating, setRating] = useState(0);
-  //const [reviews, setReviews]= useState([])
+  const [oldRating, setOldRating] = useState([]);
   const [newReview, setNewReview] = useState("");
+  const [arr, setArr] = useState([]);
+  const [num, setNum] = useState(0);
 
   const reviews = tutor.tutorData.reviews;
+  const tutorRef = doc(db, "Tutors", tutor.id);
+
+  const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
+
+  const getRating = async () => {
+    const tutorData = await getDoc(tutorRef);
+    if (oldRating.length >= 10) setOldRating([]);
+    arr.push(tutorData.data().rating);
+    setOldRating(arr);
+    setNum(Math.round(average(oldRating) * 10) / 10);
+  };
+
+  useEffect(() => {
+    getRating();
+  }, []);
 
   const handleAddReview = () => {
     reviews.push(newReview);
@@ -24,6 +41,7 @@ const SingleTutor = ({
   const handleSubmitRating = () => {
     const ratingRef = doc(db, "Tutors", tutor.id);
     setDoc(ratingRef, { rating: rating }, { merge: true });
+    getRating();
   };
 
   return (
@@ -38,13 +56,13 @@ const SingleTutor = ({
       <Text>
         {tutor.tutorData.bio} {"\n"}
       </Text>
-      <Text>{tutor.tutorData.rating}</Text>
+      <Text>{num}</Text>
       <StarRating
         rating={rating}
         onChange={setRating}
         starSize={30}
       ></StarRating>
-      <Button onPress={() => handleSubmitRating()} title="submit" />
+      <Button onPress={handleSubmitRating} title="submit" />
 
       <View>
         <TextInput
