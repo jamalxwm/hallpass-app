@@ -144,12 +144,13 @@ export const LearnerHome = ({ navigation }) => {
       {tutors.map((tutor) => {
         return (
           <Card
+            key={tutor.id}
             style={[styles.tutors, styles.shadowProp]}
             onPress={() => {
               navigation.navigate("SingleTutor", { tutor });
             }}
           >
-            <View key={tutor.id}>
+            <View>
               <Card.Cover
                 style={styles.tutorLogo}
                 source={{ uri: tutor.tutorData.image }}

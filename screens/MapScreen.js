@@ -54,6 +54,7 @@ export default function MapScreen({ navigation }) {
         {tutors.map((tutor) => {
           return (
             <MapView.Marker
+              key={tutor.id}
               coordinate={{
                 latitude: tutor.tutorData.location.latitude
                   ? tutor.tutorData.location.latitude
@@ -66,7 +67,6 @@ export default function MapScreen({ navigation }) {
               }}
             >
               <MapView.Callout
-                key={Date.now()}
                 tooltip={true}
                 style={{ backgroundColor: "#ffffff" }}
                 onPress={() => {
@@ -81,7 +81,7 @@ export default function MapScreen({ navigation }) {
                   <Text>
                     {tutor.tutorData.skills.map((skill) => {
                       return (
-                        <Text style={styles.skill}>{skill.toString()}</Text>
+                        <Text key={skill} style={styles.skill}>{skill.toString()}</Text>
                       );
                     })}{" "}
                   </Text>
