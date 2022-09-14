@@ -14,6 +14,7 @@ const SingleTutor = ({
   const [newReview, setNewReview] = useState("");
   const [arr, setArr] = useState([]);
   const [num, setNum] = useState(0);
+  const [optimisticReview, setOptimisticReview] = useState([]);
 
   const reviews = tutor.tutorData.reviews;
   const tutorRef = doc(db, "Tutors", tutor.id);
@@ -36,6 +37,10 @@ const SingleTutor = ({
     reviews.push(newReview);
     const reviewRef = doc(db, "Tutors", tutor.id);
     setDoc(reviewRef, { reviews: reviews }, { merge: true });
+    setOptimisticReview((currReviews) => {
+      return [...currReviews, newReview];
+    });
+    setNewReview("");
   };
 
   const handleSubmitRating = () => {
