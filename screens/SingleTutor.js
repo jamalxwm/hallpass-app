@@ -56,7 +56,7 @@ const SingleTutor = ({
       <Text>
         {tutor.tutorData.bio} {"\n"}
       </Text>
-      <Text>{num}</Text>
+      <Text>{num || 0}</Text>
       <StarRating
         rating={rating}
         onChange={setRating}
