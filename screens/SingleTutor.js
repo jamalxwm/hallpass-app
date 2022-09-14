@@ -3,11 +3,13 @@ import { React, useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
 import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { Chip } from "react-native-paper";
 
 const SingleTutor = ({
   route: {
     params: { tutor },
   },
+  navigation,
 }) => {
   const [rating, setRating] = useState(0);
   const [oldRating, setOldRating] = useState([]);
@@ -71,6 +73,15 @@ const SingleTutor = ({
       <Text style={styles.tutorBio}>
         {tutor.tutorData.bio} {"\n"}
       </Text>
+      <Chip
+        style={styles.map}
+        icon="map-marker"
+        onPress={() => {
+          navigation.navigate("MapScreen");
+        }}
+      >
+        Map
+      </Chip>
       <View style={styles.starRating}>
         <Text style={styles.starRating}>{num || 0}</Text>
         <StarRating
@@ -155,5 +166,12 @@ const styles = StyleSheet.create({
   all: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  map: {
+    backgroundColor: "#f0eefd",
+    height: 50,
+    width: 80,
+    marginTop: 5,
+    marginRight: 5,
   },
 });

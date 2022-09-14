@@ -97,11 +97,11 @@ export const LearnerHome = ({ navigation }) => {
       </View>
       <ScrollView horizontal={true} style={styles.skills}>
         <Chip
-          icon="human-female-dance"
+          icon="music"
           style={styles.skill}
-          onPress={() => getTutors("dancing")}
+          onPress={() => getTutors("music")}
         >
-          Dancing
+          Music
         </Chip>
         <Chip
           icon="code-braces-box"
@@ -111,18 +111,25 @@ export const LearnerHome = ({ navigation }) => {
           Programming
         </Chip>
         <Chip
-          icon="google-translate"
-          style={styles.skill}
-          onPress={() => getTutors("spanish")}
-        >
-          Spanish
-        </Chip>
-        <Chip
           icon="chef-hat"
           style={styles.skill}
           onPress={() => getTutors("cooking")}
         >
           Cooking
+        </Chip>
+        <Chip
+          icon="palm-tree"
+          style={styles.skill}
+          onPress={() => getTutors("travel")}
+        >
+          Travel
+        </Chip>
+        <Chip
+          icon="human-female-dance"
+          style={styles.skill}
+          onPress={() => getTutors("dancing")}
+        >
+          Dancing
         </Chip>
         <Chip
           icon="weight-lifter"
@@ -131,25 +138,19 @@ export const LearnerHome = ({ navigation }) => {
         >
           Fitness
         </Chip>
-        <Chip
-          icon="music"
-          style={styles.skill}
-          onPress={() => getTutors("music")}
-        >
-          Music
-        </Chip>
       </ScrollView>
 
       <Text style={styles.recommended}>Recommended</Text>
       {tutors.map((tutor) => {
         return (
           <Card
+            key={tutor.id}
             style={[styles.tutors, styles.shadowProp]}
             onPress={() => {
               navigation.navigate("SingleTutor", { tutor });
             }}
           >
-            <View key={tutor.id}>
+            <View>
               <Card.Cover
                 style={styles.tutorLogo}
                 source={{ uri: tutor.tutorData.image }}
