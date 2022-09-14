@@ -10,32 +10,12 @@ import { useState } from 'react';
 import SingleTutor from './screens/SingleTutor';
 import { LearnerHome } from './screens/LearnerHome';
 import MapScreen from './screens/MapScreen';
-import {
-  useFonts,
-  Poppins_700Bold,
-  Poppins_500Medium,
-  Poppins_600SemiBold,
-  Poppins_400Regular,
-  Poppins_300Light,
-} from '@expo-google-fonts/poppins';
-import AppLoading from 'expo-app-loading';
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState([]);
-
-  let [fontsLoaded] = useFonts({
-    Poppins_700Bold,
-    Poppins_600SemiBold,
-    Poppins_500Medium,
-    Poppins_400Regular,
-    Poppins_300Light
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
 
   return (
     <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
@@ -51,7 +31,11 @@ export default function App() {
             options={{ headerShown: false }}
             component={UserEntryStack}
           />
-          <Stack.Screen name="Home" component={LearnerHome} />
+          <Stack.Screen
+            name="Home"
+            options={{ headerShown: false }}
+            component={LearnerHome}
+          />
           <Stack.Screen name="SingleTutor" component={SingleTutor} />
           <Stack.Screen name="MapScreen" component={MapScreen} />
         </Stack.Navigator>
@@ -59,8 +43,6 @@ export default function App() {
     </UserContext.Provider>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
