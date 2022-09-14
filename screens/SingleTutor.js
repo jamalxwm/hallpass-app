@@ -38,7 +38,6 @@ const SingleTutor = ({
     reviews.push(newReview);
     const reviewRef = doc(db, "Tutors", tutor.id);
     setDoc(reviewRef, { reviews: reviews }, { merge: true });
-    //spread reviews and add
   };
 
   const handleSubmitRating = () => {
