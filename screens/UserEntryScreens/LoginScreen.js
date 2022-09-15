@@ -15,19 +15,16 @@ import {
 } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../src/contexts/user';
-import { typography, colors } from '../../styles/base';
-import Poppins from '../../src/components/Poppins';
-import { Poppins_500Medium, useFonts } from '@expo-google-fonts/poppins';
+import { colors } from '../../styles/base';
 import Logo from '../../src/components/Logo';
+import Poppins from '../../src/components/Poppins';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
-  const [fontsLoaded] = useFonts({
-    Poppins_500Medium,
-  });
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -66,7 +63,7 @@ const LoginScreen = () => {
         <View>
           <Poppins
             text={'Login. Learn anything.'}
-            style={{ color: colors.neutral[100] }}
+            style={{ color: colors.primary[100], marginTop: 10 }}
             T24
             B
           />

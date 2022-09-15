@@ -1,15 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "./screens/UserEntryScreens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen";
-import UserEntryStack from "./screens/UserEntryStack";
-import { UserContext } from "./src/contexts/user";
-import { useState } from "react";
-import SingleTutor from "./screens/SingleTutor";
-import { LearnerHome } from "./screens/LearnerHome";
-import MapScreen from "./screens/MapScreen";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './screens/UserEntryScreens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import UserEntryStack from './screens/UserEntryStack';
+import { UserContext } from './src/contexts/user';
+import { useState } from 'react';
+import SingleTutor from './screens/SingleTutor';
+import { LearnerHome } from './screens/LearnerHome';
+import MapScreen from './screens/MapScreen';
+import Splash from './screens/Splash';
+import SplashAnimation from './screens/SplashAnimation';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +22,17 @@ export default function App() {
   return (
     <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Splash Screen">
+          <Stack.Screen
+            name="Splash Screen"
+            options={{ headerShown: false }}
+            component={Splash}
+          />
+          <Stack.Screen
+            name="Splash Animation"
+            options={{ headerShown: false, animation: 'none' }}
+            component={SplashAnimation}
+          />
           <Stack.Screen
             options={{ headerShown: false }}
             name="Login"

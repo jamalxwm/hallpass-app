@@ -110,7 +110,7 @@ export const LearnerHome = ({ navigation }) => {
         </View>
         <View style={styles.homemap}>
           <Poppins
-            text={'Filter by popular categories'}
+            text={'Popular categories'}
             style={{ color: colors.neutral[100] }}
             T16
             S
@@ -196,7 +196,7 @@ export const LearnerHome = ({ navigation }) => {
           </Chip>
         </ScrollView>
         <Poppins
-          text={'Recommended'}
+          text={'Recommended for you'}
           style={{ color: colors.neutral[100], paddingLeft: 15 }}
           T16
           S
@@ -275,20 +275,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#6c5ae8',
   },
-  recommended: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 10,
-    marginTop: 15,
-  },
   cardContent: {
-    width: 350,
+    flex: 1,
+    width: '100%'
   },
   tutors: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
+    height: 280,
     marginLeft: 15,
     marginRight: 15,
     marginTop: 15,
@@ -297,7 +293,7 @@ const styles = StyleSheet.create({
   },
   tutorLogo: {
     flex: 1,
-
+    width: 360,
     borderRadius: 16,
     marginBottom: 10,
   },
