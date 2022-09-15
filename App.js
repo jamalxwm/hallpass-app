@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/UserEntryScreens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
 import UserEntryStack from './screens/UserEntryStack';
 import { UserContext } from './src/contexts/user';
 import { useState } from 'react';

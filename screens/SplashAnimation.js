@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { Component, component } from 'react';
 import AnimatedLottieView from 'lottie-react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export default class SplashAnimation extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export default class SplashAnimation extends Component {
           speed={1.5}
           onAnimationFinish={() => this.props.navigation.replace('Login')}
         />
+        <StatusBar hidden="true" />
       </View>
     );
   }

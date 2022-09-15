@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import SplashLogo from '../src/components/SplashLogo';
-import Poppins from '../src/components/Poppins';
-import { Poppins_500Medium, useFonts } from '@expo-google-fonts/poppins';
+import { Poppins_500Medium } from '@expo-google-fonts/poppins';
 import { useNavigation } from '@react-navigation/native';
 
+import { StatusBar } from 'expo-status-bar';
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
@@ -65,6 +65,7 @@ export default function Splash() {
       onLayout={onLayoutRootView}
     >
       <SplashLogo />
+      <StatusBar hidden="true" />
     </View>
   );
 }
