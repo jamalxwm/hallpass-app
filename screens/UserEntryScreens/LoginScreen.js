@@ -16,18 +16,17 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../src/contexts/user';
 import { typography, colors } from '../../styles/base';
-import Poppins from '../../src/components/Poppins';
-import { Poppins_500Medium, useFonts } from '@expo-google-fonts/poppins';
 import Logo from '../../src/components/Logo';
+import Poppins from '../../src/components/Poppins';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
-  const [fontsLoaded] = useFonts({
-    Poppins_500Medium,
-  });
+  // const [fontsLoaded] = useFonts({
+  //   Poppins_500Medium,
+  // });
   const navigation = useNavigation();
 
   useEffect(() => {
