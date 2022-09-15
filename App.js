@@ -13,6 +13,7 @@ import MapScreen from './screens/MapScreen';
 import Splash from './screens/Splash';
 import SplashAnimation from './screens/SplashAnimation';
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -47,8 +48,16 @@ export default function App() {
             options={{ headerShown: false }}
             component={LearnerHome}
           />
-          <Stack.Screen name="SingleTutor" component={SingleTutor} />
-          <Stack.Screen name="MapScreen" component={MapScreen} />
+          <Stack.Screen
+            name="SingleTutor"
+            options={{ headerShown: false }}
+            component={SingleTutor}
+          />
+          <Stack.Screen
+            name="MapScreen"
+            options={{ headerShown: false }}
+            component={MapScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
@@ -58,8 +67,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

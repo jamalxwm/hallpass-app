@@ -142,7 +142,7 @@ const SingleTutor = ({
         </View>
         <View>
           <TextInput
-            style={styles.textInput}
+            style={styles.textinput}
             value={newReview}
             onChangeText={(newReview) => {
               {
@@ -150,14 +150,6 @@ const SingleTutor = ({
               }
             }}
             placeholder="add a review"
-            styles={{
-              height: 45,
-              width: 300,
-              borderWidth: 1,
-              borderRadius: 50,
-              padding: 10,
-              marginLeft: 15,
-            }}
           />
           <TouchableOpacity onPress={() => handleAddReview()} title="submit">
             <Poppins text="Submit" style={styles.tutorSkill} T20 S />
@@ -241,7 +233,7 @@ const styles = StyleSheet.create({
   },
   reviewHead: {
     marginLeft: 15,
-     fontSize: 16,
+    fontSize: 16,
   },
   review: {
     display: "flex",
@@ -276,5 +268,14 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: colors.primary[10],
     height: 40,
+  },
+  textinput: {
+    height: 34,
+    width: 300,
+    borderWidth: 1,
+    borderRadius: 50,
+    padding: 10,
+    marginLeft: 15,
+    borderColor: "gray",
   },
 });
