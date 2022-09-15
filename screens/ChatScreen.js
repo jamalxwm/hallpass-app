@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
+import { colors } from '../styles/base';
 
 export default class ChatScreen extends React.Component {
   state = {
@@ -36,7 +37,7 @@ export default class ChatScreen extends React.Component {
             _id: 1,
           }}
           messages={this.state.messages}
-          wrapperStyle={{ right: { backgroundColor: 'purple' } }}
+          wrapperStyle={{ right: { backgroundColor: colors.primary[100] } }}
         />
       </View>
     );

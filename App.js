@@ -11,7 +11,8 @@ import { LearnerHome } from './screens/LearnerHome';
 import MapScreen from './screens/MapScreen';
 import Splash from './screens/Splash';
 import SplashAnimation from './screens/SplashAnimation';
-
+import ChatScreen from './screens/ChatScreen';
+import VideoChat from './screens/VideoChat';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,21 @@ export default function App() {
             options={{ headerShown: false }}
             component={MapScreen}
           />
+          <Stack.Screen
+            name="ChatScreen"
+            options={{ headerShown: false }}
+            component={ChatScreen}
+          />
+          <Stack.Screen
+            name="Video Chat"
+            options={{
+              title: 'Bicep',
+              headerStyle: {
+                backgroundColor: '#6869A6',
+              },
+            }}
+            component={VideoChat}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
@@ -66,8 +82,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

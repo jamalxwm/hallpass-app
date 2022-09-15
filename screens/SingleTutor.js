@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
-} from "react-native";
-import { React, useEffect, useState } from "react";
-import StarRating from "react-native-star-rating-widget";
-import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
-import { Chip } from "react-native-paper";
-import Poppins from "../src/components/Poppins";
-import { colors } from "../styles/base";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { React, useEffect, useState } from 'react';
+import StarRating from 'react-native-star-rating-widget';
+import { getFirestore, setDoc, doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { Chip } from 'react-native-paper';
+import Poppins from '../src/components/Poppins';
+import { colors } from '../styles/base';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SingleTutor = ({
   route: {
@@ -25,13 +25,13 @@ const SingleTutor = ({
 }) => {
   const [rating, setRating] = useState(0);
   const [oldRating, setOldRating] = useState([]);
-  const [newReview, setNewReview] = useState("");
+  const [newReview, setNewReview] = useState('');
   const [arr, setArr] = useState([]);
   const [num, setNum] = useState(0);
   const [optimisticReview, setOptimisticReview] = useState([]);
 
   const reviews = tutor.tutorData.reviews;
-  const tutorRef = doc(db, "Tutors", tutor.id);
+  const tutorRef = doc(db, 'Tutors', tutor.id);
 
   const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
@@ -49,16 +49,16 @@ const SingleTutor = ({
 
   const handleAddReview = () => {
     reviews.push(newReview);
-    const reviewRef = doc(db, "Tutors", tutor.id);
+    const reviewRef = doc(db, 'Tutors', tutor.id);
     setDoc(reviewRef, { reviews: reviews }, { merge: true });
     setOptimisticReview((currReviews) => {
       return [...currReviews, newReview];
     });
-    setNewReview("");
+    setNewReview('');
   };
 
   const handleSubmitRating = () => {
-    const ratingRef = doc(db, "Tutors", tutor.id);
+    const ratingRef = doc(db, 'Tutors', tutor.id);
     setDoc(ratingRef, { rating: rating }, { merge: true });
     getRating();
   };
@@ -76,7 +76,7 @@ const SingleTutor = ({
               <Poppins
                 text={[
                   tutor.tutorData.firstname,
-                  " ",
+                  ' ',
                   tutor.tutorData.lastname,
                 ]}
                 style={styles.tutorName}
@@ -92,15 +92,29 @@ const SingleTutor = ({
               <TouchableOpacity>
                 <Chip icon="account" style={styles.lessonType}>
                   <Poppins
-                    text={[tutor.tutorData.inperson] && ["in person"]}
+                    text={[tutor.tutorData.inperson] && ['in person']}
                     style={styles.tutorLesson}
                     T12
                     M
                   />
                 </Chip>
-                <Chip icon="laptop" style={styles.lessonType}>
+                <Chip
+                  icon="laptop"
+                  style={styles.lessonType}
+                  onPress={() =>
+                    navigation.navigate(
+                      'Video Chat',
+                      (options = {
+                        title: tutor.tutorData.firstname,
+                        headerStyle: {
+                          backgroundColor: '#6869A6',
+                        },
+                      })
+                    )
+                  }
+                >
                   <Poppins
-                    text={[tutor.tutorData.virtual] && ["virtual"]}
+                    text={[tutor.tutorData.virtual] && ['virtual']}
                     style={styles.tutorLesson}
                     T12
                     M
@@ -116,19 +130,23 @@ const SingleTutor = ({
               style={styles.messageButton}
               onPress={() => Linking.openURL(tutor.tutorData.links)}
             >
-              <Poppins text={"View my work"} />
+              <Poppins text={'View my work'} />
             </Chip>
             <Chip
               style={styles.messageButton}
               icon="map-marker"
               onPress={() => {
-                navigation.navigate("MapScreen");
+                navigation.navigate('MapScreen');
               }}
             >
               Map
             </Chip>
-            <Chip icon="message" style={styles.messageButton}>
-              <Poppins text={"Book"} />
+            <Chip
+              icon="message"
+              style={styles.messageButton}
+              onPress={() => navigation.navigate('ChatScreen')}
+            >
+              <Poppins text={'Book'} />
             </Chip>
           </View>
 
@@ -136,7 +154,7 @@ const SingleTutor = ({
 
           <View
             style={{
-              borderBottomColor: "#8071b5",
+              borderBottomColor: '#8071b5',
               marginBottom: 20,
               marginTop: 10,
               borderBottomWidth: StyleSheet.hairlineWidth,
@@ -180,7 +198,7 @@ const SingleTutor = ({
                 <View style={styles.review}>
                   <Poppins key={review} text={[review]} />
                   <View style={styles.datestar}>
-                    <Poppins style={styles.date} text={["16 September 2022"]} />
+                    <Poppins style={styles.date} text={['16 September 2022']} />
                     <Chip style={styles.star} icon="star">
                       {Math.round(num) || 3}
                     </Chip>
@@ -201,30 +219,30 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 15,
-    flexDirection: "column",
+    flexDirection: 'column',
     marginTop: 15,
   },
   rightSide: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginLeft: 10,
   },
   topPage: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 20,
     marginLeft: 10,
     marginTop: 10,
   },
   tutorName: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 24,
     marginTop: 20,
     lineHeight: 30,
   },
   tutorSkill: {
     fontSize: 16,
-    textAlign: "auto",
-    color: "grey",
+    textAlign: 'auto',
+    color: 'grey',
     marginBottom: 35,
   },
   tutorLesson: {
@@ -233,12 +251,12 @@ const styles = StyleSheet.create({
   lessonType: {
     marginTop: 5,
     width: 110,
-    backgroundColor: "#f3f3f3",
+    backgroundColor: '#f3f3f3',
   },
   viewMapBook: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginLeft: 20,
     marginRight: 20,
   },
@@ -250,7 +268,7 @@ const styles = StyleSheet.create({
   },
   starRating: {
     fontSize: 30,
-    alignItems: "center",
+    alignItems: 'center',
   },
   starinput: {
     marginLeft: 90,
@@ -260,14 +278,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   review: {
-    display: "flex",
-    backgroundColor: "white",
+    display: 'flex',
+    backgroundColor: 'white',
     marginLeft: 15,
     marginTop: 15,
     padding: 15,
     borderRadius: 20,
     width: 395,
-    shadowColor: "rgba(14, 14, 14, 0.12)",
+    shadowColor: 'rgba(14, 14, 14, 0.12)',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 1,
     shadowRadius: 32,
@@ -279,13 +297,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary[10],
   },
   datestar: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   date: {
     marginTop: 19,
-    color: "grey",
+    color: 'grey',
   },
   messageButton: {
     height: 30,
@@ -298,7 +316,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 15,
     padding: 22,
-    borderColor: "#8071b5",
+    borderColor: '#8071b5',
     borderWidth: 1.5,
     backgroundColor: colors.primary[10],
   },
@@ -306,12 +324,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 185,
     fontSize: 16,
-    color: "grey",
+    color: 'grey',
   },
   submit2: {
     marginTop: 10,
     fontSize: 16,
-    color: "grey",
+    color: 'grey',
     marginBottom: 20,
   },
 });
