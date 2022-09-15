@@ -4,9 +4,9 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from "react-native";
 import { React, useEffect, useState } from "react";
 import StarRating from "react-native-star-rating-widget";
@@ -14,6 +14,7 @@ import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Chip } from "react-native-paper";
 import Poppins from "../src/components/Poppins";
+import { colors } from "../styles/base";
 
 const SingleTutor = ({
   route: {
@@ -76,43 +77,57 @@ const SingleTutor = ({
               T20
               S
             />
-
             <Poppins
               text={[tutor.tutorData.skills]}
               style={styles.tutorSkill}
-              T20
-              S
+              T14
+              R
             />
-            <TouchableOpacity style={styles.lesson}>
-              <Poppins
-                text={[tutor.tutorData.inperson] && ["in person"]}
-                style={styles.tutorLesson}
-                T12
-                M
-              />
-              <Poppins
-                text={[tutor.tutorData.virtual] && ["virtual"]}
-                style={styles.tutorLesson}
-                T12
-                M
-              />
+            <TouchableOpacity>
+              <Chip icon="account" style={styles.lessonType}>
+                <Poppins
+                  text={[tutor.tutorData.inperson] && ["in person"]}
+                  style={styles.tutorLesson}
+                  T12
+                  M
+                />
+              </Chip>
+              <Chip icon="laptop" style={styles.lessonType}>
+                <Poppins
+                  text={[tutor.tutorData.virtual] && ["virtual"]}
+                  style={styles.tutorLesson}
+                  T12
+                  M
+                />
+              </Chip>
             </TouchableOpacity>
-            <Chip icon="message" style={styles.messageButton}>
-              <Poppins text={"Message me"} />
-            </Chip>
           </View>
         </View>
+
+        <View style={styles.viewMapBook}>
+          <Chip
+            icon="play-box"
+            style={styles.messageButton}
+            onPress={() => Linking.openURL(tutor.tutorData.links)}
+          >
+            <Poppins text={"View my work"} />
+          </Chip>
+          <Chip
+            style={styles.messageButton}
+            icon="map-marker"
+            onPress={() => {
+              navigation.navigate("MapScreen");
+            }}
+          >
+            Map
+          </Chip>
+          <Chip icon="message" style={styles.messageButton}>
+            <Poppins text={"Book"} />
+          </Chip>
+        </View>
+
         <Poppins text={[tutor.tutorData.bio]} style={styles.tutorBio} T14 R />
 
-        <Chip
-          style={styles.map}
-          icon="map-marker"
-          onPress={() => {
-            navigation.navigate("MapScreen");
-          }}
-        >
-          Map
-        </Chip>
         <View style={styles.starRating}>
           <Text style={styles.starRating}>{num || 0}</Text>
           <StarRating
@@ -135,20 +150,20 @@ const SingleTutor = ({
               }
             }}
             placeholder="add a review"
-            style={{
+            styles={{
               height: 45,
               width: 300,
               borderWidth: 1,
               borderRadius: 50,
               padding: 10,
-              margin: 5,
+              marginLeft: 15,
             }}
           />
           <TouchableOpacity onPress={() => handleAddReview()} title="submit">
             <Poppins text="Submit" style={styles.tutorSkill} T20 S />
           </TouchableOpacity>
         </View>
-        {reviews && <Poppins text="Reviews" style={styles.tutorSkill} T20 S />}
+        {reviews && <Poppins text="Reviews" style={styles.reviewHead} T20 S />}
         {reviews &&
           reviews.map((review) => {
             return (
@@ -172,63 +187,61 @@ export default SingleTutor;
 
 const styles = StyleSheet.create({
   tinyLogo: {
-    borderColor: "#5F5CF0",
-    borderWidth: 2,
     width: 150,
     height: 150,
     borderRadius: 15,
     flexDirection: "column",
+    marginTop: 15,
   },
-
   rightSide: {
     display: "flex",
     flexDirection: "column",
-    marginLeft: 20,
+    marginLeft: 10,
   },
   topPage: {
     flexDirection: "row",
-    marginBottom: 30,
+    marginBottom: 20,
+    marginLeft: 10,
   },
   tutorName: {
     fontWeight: "bold",
-    fontSize: "25",
-    paddingTop: 30,
-    paddingBottom: 10,
-    paddingLeft: 15,
+    fontSize: 24,
+    marginTop: 20,
     lineHeight: 30,
-    color: "#5F5CF0",
   },
   tutorSkill: {
-    fontSize: "20",
-    fontWeight: "bold",
+    fontSize: 16,
     textAlign: "auto",
+    color: "grey",
+    marginBottom: 15,
   },
   tutorLesson: {
-    fontSize: 15,
-    backgroundColor: "#7875FC",
-    width: 75,
-    opacity: 0.8,
+    fontSize: 13,
   },
-
+  lessonType: {
+    marginTop: 5,
+    width: 110,
+    backgroundColor: "#f3f3f3",
+  },
+  viewMapBook: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginLeft: 20,
+    marginRight: 20,
+  },
   tutorBio: {
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: 16,
+    margin: 7.8,
+    marginTop: 20,
   },
   starRating: {
-    fontSize: 35,
-    paddingTop: 25,
+    fontSize: 30,
     alignItems: "center",
   },
-  all: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  map: {
-    backgroundColor: "#f0eefd",
-    height: 50,
-    width: 80,
-    marginTop: 5,
-    marginRight: 5,
+  reviewHead: {
+    marginLeft: 15,
+     fontSize: 16,
   },
   review: {
     display: "flex",
@@ -248,6 +261,7 @@ const styles = StyleSheet.create({
   star: {
     height: 40,
     width: 50,
+    backgroundColor: colors.primary[10],
   },
   datestar: {
     display: "flex",
@@ -259,6 +273,8 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   messageButton: {
-    marginLeft: 100,
+    height: 30,
+    backgroundColor: colors.primary[10],
+    height: 40,
   },
 });
