@@ -15,6 +15,7 @@ import { db } from "../firebase";
 import { Chip } from "react-native-paper";
 import Poppins from "../src/components/Poppins";
 import { colors } from "../styles/base";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingleTutor = ({
   route: {
@@ -63,115 +64,133 @@ const SingleTutor = ({
   };
 
   return (
-    <ScrollView>
-      <View style={styles.all}>
-        <View style={styles.topPage}>
-          <Image
-            style={styles.tinyLogo}
-            source={{ uri: tutor.tutorData.image }}
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.all}>
+          <View style={styles.topPage}>
+            <Image
+              style={styles.tinyLogo}
+              source={{ uri: tutor.tutorData.image }}
+            />
+            <View style={styles.rightSide}>
+              <Poppins
+                text={[
+                  tutor.tutorData.firstname,
+                  " ",
+                  tutor.tutorData.lastname,
+                ]}
+                style={styles.tutorName}
+                T20
+                S
+              />
+              <Poppins
+                text={[tutor.tutorData.skills]}
+                style={styles.tutorSkill}
+                T14
+                R
+              />
+              <TouchableOpacity>
+                <Chip icon="account" style={styles.lessonType}>
+                  <Poppins
+                    text={[tutor.tutorData.inperson] && ["in person"]}
+                    style={styles.tutorLesson}
+                    T12
+                    M
+                  />
+                </Chip>
+                <Chip icon="laptop" style={styles.lessonType}>
+                  <Poppins
+                    text={[tutor.tutorData.virtual] && ["virtual"]}
+                    style={styles.tutorLesson}
+                    T12
+                    M
+                  />
+                </Chip>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.viewMapBook}>
+            <Chip
+              icon="play-box"
+              style={styles.messageButton}
+              onPress={() => Linking.openURL(tutor.tutorData.links)}
+            >
+              <Poppins text={"View my work"} />
+            </Chip>
+            <Chip
+              style={styles.messageButton}
+              icon="map-marker"
+              onPress={() => {
+                navigation.navigate("MapScreen");
+              }}
+            >
+              Map
+            </Chip>
+            <Chip icon="message" style={styles.messageButton}>
+              <Poppins text={"Book"} />
+            </Chip>
+          </View>
+
+          <Poppins text={[tutor.tutorData.bio]} style={styles.tutorBio} T14 R />
+
+          <View
+            style={{
+              borderBottomColor: "#8071b5",
+              marginBottom: 20,
+              marginTop: 10,
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            }}
           />
-          <View style={styles.rightSide}>
-            <Poppins
-              text={[tutor.tutorData.firstname, " ", tutor.tutorData.lastname]}
-              style={styles.tutorName}
-              T20
-              S
-            />
-            <Poppins
-              text={[tutor.tutorData.skills]}
-              style={styles.tutorSkill}
-              T14
-              R
-            />
-            <TouchableOpacity>
-              <Chip icon="account" style={styles.lessonType}>
-                <Poppins
-                  text={[tutor.tutorData.inperson] && ["in person"]}
-                  style={styles.tutorLesson}
-                  T12
-                  M
-                />
-              </Chip>
-              <Chip icon="laptop" style={styles.lessonType}>
-                <Poppins
-                  text={[tutor.tutorData.virtual] && ["virtual"]}
-                  style={styles.tutorLesson}
-                  T12
-                  M
-                />
-              </Chip>
+
+          <View style={styles.starRating}>
+            <Text style={styles.starRating}>{num || 0}</Text>
+            <StarRating
+              style={styles.starinput}
+              rating={rating}
+              onChange={setRating}
+              starSize={40}
+            ></StarRating>
+
+            <TouchableOpacity onPress={handleSubmitRating} title="submit">
+              <Poppins text="Submit" style={styles.submit2} T20 S />
             </TouchableOpacity>
           </View>
-        </View>
-
-        <View style={styles.viewMapBook}>
-          <Chip
-            icon="play-box"
-            style={styles.messageButton}
-            onPress={() => Linking.openURL(tutor.tutorData.links)}
-          >
-            <Poppins text={"View my work"} />
-          </Chip>
-          <Chip
-            style={styles.messageButton}
-            icon="map-marker"
-            onPress={() => {
-              navigation.navigate("MapScreen");
-            }}
-          >
-            Map
-          </Chip>
-          <Chip icon="message" style={styles.messageButton}>
-            <Poppins text={"Book"} />
-          </Chip>
-        </View>
-
-        <Poppins text={[tutor.tutorData.bio]} style={styles.tutorBio} T14 R />
-
-        <View style={styles.starRating}>
-          <Text style={styles.starRating}>{num || 0}</Text>
-          <StarRating
-            rating={rating}
-            onChange={setRating}
-            starSize={40}
-          ></StarRating>
-
-          <TouchableOpacity onPress={handleSubmitRating} title="submit">
-            <Poppins text="Submit" style={styles.tutorSkill} T20 S />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput
-            style={styles.textinput}
-            value={newReview}
-            onChangeText={(newReview) => {
-              {
-                setNewReview(newReview);
-              }
-            }}
-            placeholder="add a review"
-          />
-          <TouchableOpacity onPress={() => handleAddReview()} title="submit">
-            <Poppins text="Submit" style={styles.tutorSkill} T20 S />
-          </TouchableOpacity>
-        </View>
-        {reviews && <Poppins text="Reviews" style={styles.reviewHead} T20 S />}
-        {reviews &&
-          reviews.map((review) => {
-            return (
-              <View style={styles.review}>
-                <Poppins key={review} text={[review]} />
-                <View style={styles.datestar}>
-                  <Poppins style={styles.date} text={["16 September 2022"]} />
-                  <Chip style={styles.star} icon="star">
-                    {Math.round(num) || 3}
-                  </Chip>
+          <View>
+            <TextInput
+              style={styles.textinput}
+              value={newReview}
+              onChangeText={(newReview) => {
+                {
+                  setNewReview(newReview);
+                }
+              }}
+              placeholder="add a review"
+            />
+            <TouchableOpacity onPress={() => handleAddReview()} title="submit">
+              <Poppins text="Submit" style={styles.submit} T20 S />
+            </TouchableOpacity>
+          </View>
+          {reviews && (
+            <Poppins text="Reviews" style={styles.reviewHead} T20 S />
+          )}
+          {reviews &&
+            reviews.map((review) => {
+              return (
+                <View style={styles.review}>
+                  <Poppins key={review} text={[review]} />
+                  <View style={styles.datestar}>
+                    <Poppins style={styles.date} text={["16 September 2022"]} />
+                    <Chip style={styles.star} icon="star">
+                      {Math.round(num) || 3}
+                    </Chip>
+                  </View>
                 </View>
-              </View>
-            );
-          })}
-      </View>
-    </ScrollView>
+              );
+            })}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -179,8 +198,8 @@ export default SingleTutor;
 
 const styles = StyleSheet.create({
   tinyLogo: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 160,
     borderRadius: 15,
     flexDirection: "column",
     marginTop: 15,
@@ -194,6 +213,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 20,
     marginLeft: 10,
+    marginTop: 10,
   },
   tutorName: {
     fontWeight: "bold",
@@ -205,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "auto",
     color: "grey",
-    marginBottom: 15,
+    marginBottom: 35,
   },
   tutorLesson: {
     fontSize: 13,
@@ -224,31 +244,34 @@ const styles = StyleSheet.create({
   },
   tutorBio: {
     fontSize: 16,
-    margin: 7.8,
+    marginLeft: 15,
     marginTop: 20,
+    marginBottom: 15,
   },
   starRating: {
     fontSize: 30,
     alignItems: "center",
   },
+  starinput: {
+    marginLeft: 90,
+  },
   reviewHead: {
-    marginLeft: 15,
+    marginLeft: 20,
     fontSize: 16,
   },
   review: {
     display: "flex",
     backgroundColor: "white",
     marginLeft: 15,
-    marginRight: 15,
     marginTop: 15,
     padding: 15,
     borderRadius: 20,
-    width: 340,
-    shadowColor: "#757575",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 2.2,
-    shadowRadius: 3,
-    elevation: 5,
+    width: 395,
+    shadowColor: "rgba(14, 14, 14, 0.12)",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 1,
+    shadowRadius: 32,
+    elevation: 32,
   },
   star: {
     height: 40,
@@ -267,15 +290,28 @@ const styles = StyleSheet.create({
   messageButton: {
     height: 30,
     backgroundColor: colors.primary[10],
-    height: 40,
+    height: 50,
   },
   textinput: {
-    height: 34,
-    width: 300,
-    borderWidth: 1,
-    borderRadius: 50,
-    padding: 10,
     marginLeft: 15,
-    borderColor: "gray",
+    width: 400,
+    height: 40,
+    borderRadius: 15,
+    padding: 22,
+    borderColor: "#8071b5",
+    borderWidth: 1.5,
+    backgroundColor: colors.primary[10],
+  },
+  submit: {
+    marginTop: 10,
+    marginLeft: 185,
+    fontSize: 16,
+    color: "grey",
+  },
+  submit2: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "grey",
+    marginBottom: 20,
   },
 });
