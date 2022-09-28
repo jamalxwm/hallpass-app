@@ -9,7 +9,7 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import { db } from "../firebase";
+import { db } from "../.firebase";
 import { getDocs, collection, doc, getDoc } from "firebase/firestore";
 import { UserContext } from "../src/contexts/user";
 

@@ -16,7 +16,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../src/contexts/user';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../.firebase';
 
 
 

@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import { React, useEffect, useState, useContext } from 'react';
-import { db } from '../firebase';
+import { db } from '../.firebase';
 import {
   getDocs,
   collection,

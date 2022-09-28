@@ -11,7 +11,7 @@ import {
 import { React, useEffect, useState } from 'react';
 import StarRating from 'react-native-star-rating-widget';
 import { getFirestore, setDoc, doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../.firebase';
 import { Chip } from 'react-native-paper';
 import Poppins from '../src/components/Poppins';
 import { colors } from '../styles/base';
